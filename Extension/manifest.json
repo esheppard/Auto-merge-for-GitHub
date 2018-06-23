@@ -1,0 +1,49 @@
+{
+  "name": "Auto-Merge for GitHub",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Automatically Squash and merge a Pull Request on GitHub once all required statuses pass.",
+  "icons": {
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "options_page": "src/options/options.html",
+  "background": {
+    "scripts": [
+      "lib/jquery.min.js",
+      "src/utils.js",
+      "src/background/jobs.js",
+      "src/background/github.js",
+      "src/background/background.js"
+    ],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://github.com/*"
+      ],
+      "css": [
+        "src/content/content.css"
+      ],
+      "js": [
+        "lib/jquery.min.js",
+        "src/utils.js",
+        "src/content/button.js",
+        "src/content/content.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "content_security_policy": "script-src 'self' https://github.com; object-src 'self';",
+  "permissions": [
+      "tabs",
+      "storage",
+      "notifications",
+      "https://github.com/",
+      "https://api.github.com/"
+  ]
+}

@@ -1,0 +1,63 @@
+
+body
+{
+    background-color: #fff;
+    padding: 30px 60px 30px 60px;
+    margin: 0px;
+    font-family: Helvetica, Ubuntu, Arial, sans-serif;
+}
+
+.title
+{
+    color: #525252;
+    font-size: 34px;
+}
+
+.subtitle
+{
+    color: #6d6d6d;
+    font-size: 22px;
+}
+
+.sep
+{
+    color: #636363;
+    border-right: 2px solid #7d7d7d;
+}
+
+.dot
+{
+    color: #525252;
+}
+
+.text
+{
+    font-size: 1em;
+    margin: 5px;
+}
+
+.section-container
+{
+    padding: 15px 20px 10px 20px;
+}
+
+hr
+{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-top: 1px solid #ddd;
+}
+
+
+.option-label
+{
+  position: relative;
+  top: 1px;
+  left: 2px;
+}
+
+.option-container
+{
+  position: relative;
+  left: 5px
+}
