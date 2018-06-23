@@ -16,7 +16,7 @@ function log(message) {
   console.log(`${display_title}: ${message}`);
 }
 
-const githubAccessToken = 'e16b2699d94ffffe91348cdaecac1c75e3144b42';
+const githubAccessToken = '';
 
 document.addEventListener('DOMContentLoaded', function() {
   github = new GitHub(log, githubAccessToken);
