@@ -1,6 +1,6 @@
-function GitHub(logger, accessToken) {
+function GitHub(logger) {
   this.logger = logger;
-  this.accessToken = accessToken;
+  this.accessToken = null;
   this.baseUrl = 'https://api.github.com';
 }
 
@@ -11,7 +11,6 @@ GitHub.prototype.requestForPRStatus = function(owner, repo, pr_number) {
   }
 
   let url = `${this.baseUrl}/repos/${owner}/${repo}/pulls/${pr_number}?access_token=${this.accessToken}`;
-  this.logger(url);
   return $.ajax(url, {});
 }
 

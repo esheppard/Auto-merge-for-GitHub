@@ -5,6 +5,7 @@
 
     <link type="text/css" href="/lib/OpenSans.css" rel="stylesheet"  />
 
+    <script type="text/javascript" src="/src/utils.js"></script>
     <script type="text/javascript" src="/lib/jquery.min.js"></script>
 
     <link type="text/css" href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -24,13 +25,33 @@
   <div class="subtitle">Preferences</div>
   <hr/>
 
-  <div classs="option-container">
-    <input type="checkbox" id="clear-merge-commit-message-check" /> <span classs="option-label">Clear merge description</span>
-  </div>
+    <form class="options-form">
+      <p>
+        You'll need to <a href="https://github.com/settings/tokens" target="_blank">create a GitHub access token</a> in order for this extension to access the GitHub API for querying and merging Pull Requests.
+      </p>
 
-  <div classs="option-container">
-    <input type="checkbox" id="set-merge-title-as-pr-title-check" /> <span classs="option-label">Set merge title as PR title</span>
-  </div>
+      <div class="info-container">
+
+        <div class="row info-item">
+          <div class="column info-title">Token description</div> <div class="column">Auto-merge for GitHub (Chrome extension)</div>
+        </div>
+
+        <div class="row info-item">
+          <div class="column info-title">Scopes</div> <div class="column">repo</div>
+        </div>
+
+      </div>
+
+      <input class="option-text-input" type="text" name="accessToken" placeholder="GitHub Access Token" autocomplete="off">
+      <button type="button" class="save-button">Save</button>
+      <span class="success-message" style="display:none">Saved</span>
+
+      <div class="option-error">
+        <span class="no-token-error" style="display:none">Please enter a token</span>
+        <span class="invaild-token-error" style="display:none">This token is no longer valid</span>
+      </div>
+
+    </form>
 
 </div>
 

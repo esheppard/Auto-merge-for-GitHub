@@ -48,6 +48,9 @@ hr
     border-top: 1px solid #ddd;
 }
 
+.row {
+    display: flex;
+}
 
 .option-label
 {
@@ -60,4 +63,77 @@ hr
 {
   position: relative;
   left: 5px
+}
+
+.option-text-input {
+  width: 400px;
+  padding: 4px;
+  font-size: 14px;
+}
+
+.options-form p {
+  font-size: 15px;
+}
+
+.options-form p a {
+  text-decoration: none;
+}
+
+.option-error {
+  font-size: 14px;
+  color: #c4012f;
+  margin-left: 6px;
+  margin-top: 6px;
+}
+
+.info-container {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  font-size: 14px;
+  color: #707070;
+}
+
+.info-item {
+  margin-bottom: 5px;
+}
+
+.info-title {
+  text-align: right;
+  font-weight: bold;
+  width: 150px;
+  font-size: 14px;
+  padding-right:10px;
+}
+
+.success-message {
+  margin-left: 10px;
+  font-size: 15px;
+  color: #54bd0f;
+}
+
+.save-button {
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.save-button {
+  -webkit-border-radius: 2;
+  -moz-border-radius: 2;
+  border-radius: 2px;
+  color: #ffffff;
+  background: #3498db;
+  padding: 6px 14px 6px 14px;
+  text-decoration: none;
+  outline:none;
+  border:none;
+}
+
+.save-button:hover {
+  background: #6294b3;
+  text-decoration: none;
+}
+
+.save-button:active {
+  background: #19699e;
 }

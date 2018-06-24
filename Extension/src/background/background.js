@@ -1,3 +1,5 @@
+// Auto-merge for GitHub
+// Copyright 2018 Elijah Sheppard
 
 const display_title = 'Auto-merge for GitHub';
 
@@ -16,15 +18,20 @@ function log(message) {
   console.log(`${display_title}: ${message}`);
 }
 
-const githubAccessToken = '';
-
 document.addEventListener('DOMContentLoaded', function() {
-  github = new GitHub(log, githubAccessToken);
+  github = new GitHub(log);
   jobs = new PRJobs();
 
-  // loadGitHubAccessToken();
+  loadGitHubAccessToken();
   reloadOpenPRs();
 });
+
+chrome.runtime.onInstalled.addListener(function(details) {
+    if(details.reason == 'install') {
+        chrome.tabs.create({url: '/src/options/welcome.html'});
+    }
+});
+
 
 // TODO
 // - onboarding page to enter your access_token - encrypt with github cookie
@@ -124,14 +131,14 @@ function extractPRDetails(url_path) {
 
 function loadGitHubAccessToken() {
   chrome.storage.local.get(GITHUB_ACCESS_TOKEN_PREF, function(result) {
-      setGitHubAccessToken(result[GITHUB_ACCESS_TOKEN_PREF]);
+    setGitHubAccessToken(result[GITHUB_ACCESS_TOKEN_PREF]);
   });
 }
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
   for(key in changes) {
     if(key == GITHUB_ACCESS_TOKEN_PREF) {
-      setGitHubAccessToken(storageChange.newValue);
+      setGitHubAccessToken(changes[key].newValue);
     }
   }
 });
@@ -147,7 +154,7 @@ function hasGitHubAccessToken() {
 }
 
 function setGitHubInvalidTokenHash(hashCode) {
-  chrome.storage.sync.set({ GITHUB_INVALID_TOKEN_HASH_PREF: hashCode });
+  chrome.storage.local.set({ 'invalidTokenHash': hashCode });
 }
 
 
@@ -299,7 +306,7 @@ function notifyGitHubAPIFailure(key, pr_data, jqXHR) {
 
       // store the hash of the current accessToken so we can identify it as
       // being invalid (we can display a message to the user on the configuration screen)
-      setGitHubInvalidTokenHash(github.accessToken.hashCode);
+      setGitHubInvalidTokenHash( github.accessToken.hashCode() );
 
       // clear the api object's token, so we wont continue to make requests.
       // when the storage updates with a new value, we'll use that instead.

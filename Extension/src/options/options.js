@@ -1,26 +1,48 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-    $('#clear-merge-commit-message-check').click(savePrefs);
-    $('#set-merge-title-as-pr-title-check').click( function(e) {
+    $('.options-form .save-button').click( function(e) {
       savePrefs();
+    });
+
+    $(document).on('keypress', 'form', function(event) {
+      return event.keyCode != 13; // prevent enter key in text boxes submitting the form
     });
 
     window.setTimeout(function() {
         loadPrefs();
-    }, 1);
+    },1);
 });
 
 function loadPrefs() {
-  chrome.storage.sync.get(null, function(result) {
-    $('#clear-merge-commit-message-check').prop('checked', result.clearMergeMessage == 1);
-    $('#set-merge-title-as-pr-title-check').prop('checked', result.setMergeTitleAsPRTitle == 1);
+  chrome.storage.local.get(null, function(result) {
+    let tokenValue = result['accessToken'];
+    let tokenHashValue = result['invalidTokenHash'];
+
+    $('[name=accessToken]').val(tokenValue);
+
+    if( tokenHashValue && (tokenValue.hashCode() == tokenHashValue) ) {
+      $('.invaild-token-error').show();
+    }
   });
 }
 
 function savePrefs() {
-  let clearMergeMessage_checked = $('#clear-merge-commit-message-check').is(":checked");
-  chrome.storage.sync.set({'clearMergeMessage': clearMergeMessage_checked});
+  let tokenValue = $('[name=accessToken]').val();
 
-  let setMergeTitleAsPRTitle_checked = $('#set-merge-title-as-pr-title-check').is(":checked");
-  chrome.storage.sync.set({'setMergeTitleAsPRTitle': setMergeTitleAsPRTitle_checked});
+  chrome.storage.local.set({
+    'accessToken': tokenValue,
+    'invalidTokenHash': null
+  });
+
+  hideErrors();
+  if(tokenValue == null || tokenValue.length == 0) {
+    $('.no-token-error').show();
+  }
+
+  $('.options-form .success-message').show().delay(1000).fadeOut();
+}
+
+function hideErrors() {
+  $('.no-token-error').hide();
+  $('.invaild-token-error').hide();
 }
