@@ -1,3 +1,8 @@
+// Auto-merge for GitHub
+// Copyright 2018 Elijah Sheppard
+
+const GITHUB_ACCESS_TOKEN_PREF = 'accessToken';
+const GITHUB_INVALID_TOKEN_HASH_PREF = 'invalidTokenHash';
 
 document.addEventListener('DOMContentLoaded', function() {
     $('.options-form .save-button').click( function(e) {
@@ -15,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadPrefs() {
   chrome.storage.local.get(null, function(result) {
-    let tokenValue = result['accessToken'];
-    let tokenHashValue = result['invalidTokenHash'];
-
+    let tokenValue = result[GITHUB_ACCESS_TOKEN_PREF];
+    let tokenHashValue = result[GITHUB_INVALID_TOKEN_HASH_PREF];
+    
     $('[name=accessToken]').val(tokenValue);
 
     if( tokenHashValue && (tokenValue.hashCode() == tokenHashValue) ) {
@@ -30,8 +35,8 @@ function savePrefs() {
   let tokenValue = $('[name=accessToken]').val();
 
   chrome.storage.local.set({
-    'accessToken': tokenValue,
-    'invalidTokenHash': null
+    [GITHUB_ACCESS_TOKEN_PREF]: tokenValue,
+    [GITHUB_INVALID_TOKEN_HASH_PREF]: null
   });
 
   hideErrors();

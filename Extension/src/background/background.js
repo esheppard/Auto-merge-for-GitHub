@@ -14,9 +14,9 @@ let jobs = null;
 let timer = null;
 let github = null;
 
-const debug = true;
+const enableDebugLogging = false;
 function debugLog(object) {
-  if(debug) { console.log(object); }
+  if(enableDebugLogging) { console.log(object); }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -164,7 +164,7 @@ function hasGitHubAccessToken() {
 }
 
 function setGitHubInvalidTokenHash(hashCode) {
-  chrome.storage.local.set({ 'invalidTokenHash': hashCode });
+  chrome.storage.local.set({ [GITHUB_INVALID_TOKEN_HASH_PREF]: hashCode });
 }
 
 
@@ -417,7 +417,7 @@ function notifyNoAccessTokenConfigured() {
 
 function notifyInvalidAccessTokenProvided() {
   const msg = 'The provided GitHub access token is invalid';
-  notify('needs-access-token', display_title, msg, function() {
+  notify('invalid-access-token', display_title, msg, function() {
     chrome.tabs.create({ url: 'src/options/welcome.html' });
   });
 }
