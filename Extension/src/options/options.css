@@ -125,8 +125,8 @@ hr
   background: #3498db;
   padding: 6px 14px 6px 14px;
   text-decoration: none;
-  outline:none;
-  border:none;
+  outline: none;
+  border: none;
 }
 
 .save-button:hover {

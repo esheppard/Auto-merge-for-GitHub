@@ -11,7 +11,7 @@ GitHub.prototype.requestForPRStatus = function(owner, repo, pr_number) {
   }
 
   let url = `${this.baseUrl}/repos/${owner}/${repo}/pulls/${pr_number}?access_token=${this.accessToken}`;
-  return $.ajax(url, {});
+  return $.ajax(url, { cache: false });
 }
 
 GitHub.prototype.requestForMergePR = function(owner, repo, pr_number, title, message, sha, merge_method) {

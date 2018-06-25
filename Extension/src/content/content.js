@@ -25,11 +25,12 @@ let mergeContainerEl = $('.merge-message');
 let branchActionContainerEl = $('.branch-action-item');
 
 // TODO or just observe $('.branch-action-body')
-observeDOM(mergeContainerEl.get(0), onDOMChanged);
-observeDOM(branchActionContainerEl.get(0), onDOMChanged);
-observeDOM($('.branch-action-body').get(0), onDOMChanged);
+// observeDOM(mergeContainerEl.get(0), onDOMChanged);
+// observeDOM(branchActionContainerEl.get(0), onDOMChanged);
+// observeDOM($('.branch-action-body').get(0), onDOMChanged);
 
-observeDOM($('.branch-action-body').get(0), onBranchActionChanged);
+// observeDOM($('.branch-action-body').get(0), onBranchActionChanged);
+observeDOM($('#partial-pull-merging').get(0), onPartialPullMergingChanged);
 
 
 // -- Background interaction --
@@ -101,6 +102,10 @@ function onBranchActionChanged() {
   // console.log(logPrefix + "testing..");
   // if($('.merge-message').length == 0) { console.log(logPrefix + "merge-message not in DOM"); }
   // if($('.branch-action-item').length == 0) { console.log(logPrefix + "branch-action-item not in DOM"); }
+}
+
+function onPartialPullMergingChanged() {
+  console.log(logPrefix + "onPartialPullMergingChanged");
 }
 
 function onDOMChanged() {

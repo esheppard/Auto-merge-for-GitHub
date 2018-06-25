@@ -14,12 +14,15 @@ let jobs = null;
 let timer = null;
 let github = null;
 
-function log(message) {
-  console.log(`${display_title}: ${message}`);
+const debug = true;
+function debugLog(object) {
+  if(debug) { console.log(object); }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  github = new GitHub(log);
+  debugLog('DOMContentLoaded');
+
+  github = new GitHub(debugLog);
   jobs = new PRJobs();
 
   loadGitHubAccessToken();
@@ -27,14 +30,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 chrome.runtime.onInstalled.addListener(function(details) {
+    debugLog('chrome.runtime.onInstalled: ');
+    debugLog(details);
+
     if(details.reason == 'install') {
-        chrome.tabs.create({url: '/src/options/welcome.html'});
+      chrome.tabs.create({url: '/src/options/welcome.html'});
     }
 });
 
 
 // TODO
-// - onboarding page to enter your access_token - encrypt with github cookie
 // - settings page link next to auto-merge button
 // - determine which merge method the button is set it
 
@@ -48,6 +53,9 @@ const JOB_STATUS_ACTIVE = 'active';
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
+    debugLog('chrome.runtime.onMessage: ');
+    debugLog(request);
+
     if(request.action == JOB_ACTION_ADD) {
       let hasJob = addJobForPath(request.urlPath, request.method);
       sendResponse({jobStatus: hasJob ? JOB_STATUS_ACTIVE : null});
@@ -111,7 +119,9 @@ function hasJobForPath(url_path) {
 // - PR related URL utils -
 
 function isPRUrl(url_path) {
-  let components = url_path.split('/');
+  let components = url_path.removingAllAfter('#')
+                           .removingSuffix('/')
+                           .split('/');
   return components.length == 5 && components[3] === 'pull';
 }
 
@@ -213,6 +223,9 @@ function check(key) {
   request.done(function(status) {
     jobs.setLastStatus(key, status);
 
+    debugLog(`Status of '${key}': `);
+    debugLog(status);
+
     if(status.merged == true) {
       jobs.remove(key);
     }
@@ -244,9 +257,12 @@ function updateBranch(key) {
                                               pr_data.repo,
                                               pr_data.lastStatus.head.ref,
                                               pr_data.lastStatus.base.ref);
-  request.done(function(result) {
+  request.done(function(result, textStatus, jqXHR) {
     pr_data.nextCheckAt = Date.now() + ON_REFRESH_INTERVAL;
     configureTimer();
+
+    debugLog(`Updated '${key}': ${jqXHR.status} (${textStatus})`);
+    debugLog(result);
 
     notifyBranchUpdated(key, pr_data);
   });
@@ -328,7 +344,9 @@ function reloadOpenPRs() {
   chrome.tabs.query({}, function(tabs) {
     for(var i = 0; i < tabs.length; i++) {
       let path = tabs[i].url.trim().removingPrefix(`https://${host}`)
-                                   .removingPrefix(`https://www.${host}`);
+                                   .removingPrefix(`https://www.${host}`)
+                                   .removingAllAfter('#')
+                                   .removingSuffix('/');
       if( isPRUrl(path) ) {
         chrome.tabs.reload(tabs[i].id);
       }
